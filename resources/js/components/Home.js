@@ -16,7 +16,6 @@ export default class Home extends Component{
         axios.get('http://localhost:80/posts')
             .then(response => {
                 this.setState({ posts: response.data.posts });
-                console.log(this.state.posts);
             })
             .catch(function (error) {
                 console.log(error);
@@ -28,11 +27,11 @@ export default class Home extends Component{
             return this.state.posts.map((data, index) => {
                 return (
                     <tr key={index}>
-                        <td>{index}</td>
+                        <td>{data.id}</td>
                         <td>{data.title}</td>
                         <td>{data.slug}</td>
                         <td>{data.content}</td>
-                        <td><Link to={'/edit/' + data.id}><Button className="btn-success">Edit</Button></Link></td>
+                        <td><Link to={'/edit/' + data.id}><Button className="btn btn-success">Edit</Button></Link></td>
                     </tr>
                 )
             })
@@ -42,6 +41,7 @@ export default class Home extends Component{
     render() {
         return (
             <div>
+                <Link to={'/create'}><Button className="btn btn-danger">To Create</Button></Link>
                 <table className="table">
                     <thead>
                         <tr>
