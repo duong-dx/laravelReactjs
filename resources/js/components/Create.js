@@ -30,7 +30,11 @@ export default class Create extends Component{
         };
         let uri = 'http://localhost:80/posts';
         let redirectTo = '/#/home';
-        axios.post(uri, data)
+        axios({
+            method: 'post',
+            url: uri,
+            data: data
+        })
             .then((response) => {
                 if (response && response.data) {
                     self.setState({flag: true});

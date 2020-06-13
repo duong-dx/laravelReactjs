@@ -85514,7 +85514,11 @@ var Create = /*#__PURE__*/function (_Component) {
       };
       var uri = 'http://localhost:80/posts';
       var redirectTo = '/#/home';
-      axios.post(uri, data).then(function (response) {
+      axios({
+        method: 'post',
+        url: uri,
+        data: data
+      }).then(function (response) {
         if (response && response.data) {
           self.setState({
             flag: true
