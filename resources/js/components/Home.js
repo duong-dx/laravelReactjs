@@ -32,6 +32,7 @@ export default class Home extends Component{
                         <td>{data.slug}</td>
                         <td>{data.content}</td>
                         <td><Link to={'/edit/' + data.id}><Button className="btn btn-success">Edit</Button></Link></td>
+                        <td><Link to={'/posts/' + data.id}><Button className="btn btn-group">Show</Button></Link></td>
                     </tr>
                 )
             })
