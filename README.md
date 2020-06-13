@@ -1,3 +1,6 @@
+development by Duong Dinh Xuan 
+email : duong120798@gmail.com
+
 - composer require laravel/ui
 - php artisan ui react
 - npm install 
