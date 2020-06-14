@@ -1,18 +1,40 @@
-import React, {Component} from 'react';
-import { Redirect } from "react-router-dom";
+import React, {Component, PureComponent} from "react";
 import FlashError from "../view/FlashError";
 
-export default class Create extends Component{
+export default class Update extends Component {
     constructor(props) {
         super(props);
         this.state = {
             title: '',
             slug: '',
             content: '',
+            id: '',
             flag: true
         };
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    componentDidMount() {
+        //get param router dom
+
+        const { match: { params } } = this.props;
+        let url = `http://localhost:80/posts/${params.id}/edit`;
+        axios({
+            method: 'get',
+            url: url
+        }).then(response => {
+            if (response && response.data) {
+                this.setState({
+                    title: response.data.title,
+                    slug: response.data.slug,
+                    content: response.data.content,
+                    id: response.data.id,
+                })
+            }
+        }).catch(function(error) {
+            console.log(error);
+        })
     }
 
     handleChange(event) {
@@ -26,16 +48,18 @@ export default class Create extends Component{
         let data = {
             title: this.state.title,
             slug: this.state.slug,
-            content: this.state.content
+            content: this.state.content,
+            id: this.state.id
         };
-        let uri = 'http://localhost:80/posts';
+        let uri = 'http://localhost:80/posts/' + this.state.id;
         let redirectTo = '/#/home';
         axios({
-            method: 'post',
+            method: 'patch',
             url: uri,
             data: data
         })
             .then((response) => {
+                console.log(response);
                 if (response && response.data) {
                     self.setState({flag: true});
                     window.location.href = redirectTo;
@@ -56,7 +80,7 @@ export default class Create extends Component{
         return (
             <div>
                 {!flag && <FlashError />}
-                <h1> ADD Screen</h1>
+                <h1> Edit Screen</h1>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group" >
                         <input className="form-control" type="text" name="title" value={this.state.title} onChange={this.handleChange} placeholder="Title"/>

@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PostRequest extends FormRequest
 {
@@ -17,17 +19,26 @@ class PostRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * @param Request $request
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
-        return [
-            'title' => 'required|max:255',
-            'content' => 'required|max:255',
-            'slug' => 'required|unique:posts,slug|max:255',
-        ];
+        $params = $request->all();
+        if (isset($params['id'])) {
+            return [
+                'title' => 'required|max:255',
+                'content' => 'required|max:255',
+                'slug' => ['required', Rule::unique('posts')->ignore($params['id']), 'max:255'],
+            ];
+        } else {
+            return [
+                'title' => 'required|max:255',
+                'content' => 'required|max:255',
+                'slug' => 'required|unique:posts,slug|max:255',
+            ];
+        }
+
     }
 
     public function messages()
